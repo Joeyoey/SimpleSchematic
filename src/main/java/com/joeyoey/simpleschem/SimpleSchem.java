@@ -6,10 +6,13 @@ import com.google.gson.reflect.TypeToken;
 import com.joeyoey.simpleschem.adapters.BlockDataAdapter;
 import com.joeyoey.simpleschem.adapters.VectorAdapter;
 import com.joeyoey.simpleschem.schemobjects.Schematic;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
 
 import java.io.*;
+import java.util.Map;
 
 public final class SimpleSchem {
 
@@ -99,6 +102,51 @@ public final class SimpleSchem {
             return null;
         }
     }
+
+
+    private static boolean isSafe(Location center, Schematic schematic) {
+        int width = schematic.getWidth();
+        int height = schematic.getHeight();
+        int length = schematic.getLength();
+        Location clone = center.clone();
+        clone.subtract(width/2,height/2,length/2);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y< height; y++) {
+                for (int z = 0; z < length; z++) {
+                    if (!clone.getBlock().getType().equals(Material.AIR)) {
+                        return false;
+                    }
+                    clone.add(0,0,1);
+                }
+                clone.setZ(length/2);
+                clone.add(0,1,0);
+            }
+            clone.setY(height/2);
+            clone.add(1,0,0);
+        }
+        return true;
+    }
+
+
+    /**
+     * This method pastes a schematic at a desired location after checking that the area is big enough and open enough for the schematic
+     * @param center the center of the paste
+     * @param schematic the schematic to paste
+     * @return whether the schematic was successfully pasted or not
+     */
+    public static boolean slowPaste(Location center, Schematic schematic) {
+        if (!isSafe(center, schematic)) {
+            return false;
+        } else {
+            Location clone;
+            for (Map.Entry<Vector, BlockData> entry : schematic.getBlockDataMap().entrySet()) {
+                clone = center.clone();
+                clone.add(entry.getKey()).getBlock().setBlockData(entry.getValue(),true);
+            }
+            return true;
+        }
+    }
+
 
 
 }

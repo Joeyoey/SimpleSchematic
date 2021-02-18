@@ -24,4 +24,19 @@ public class Schematic {
     }
 
 
+    public Map<Vector, BlockData> getBlockDataMap() {
+        return blockDataMap;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getLength() {
+        return length;
+    }
 }
