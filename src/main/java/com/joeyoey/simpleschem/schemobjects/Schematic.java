@@ -9,7 +9,7 @@ import java.util.Map;
 public class Schematic {
 
 
-    private Map<Vector, BlockData> blockDataMap = new HashMap<>(); // block relative location and its data
+    private Map<Vector, BlockData> blockDataMap; // block relative location and its data
 
     private int width; // X axis
     private int height; // y axis
@@ -39,4 +39,8 @@ public class Schematic {
     public int getLength() {
         return length;
     }
+
+
+
+
 }

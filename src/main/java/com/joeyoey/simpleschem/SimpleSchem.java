@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.joeyoey.simpleschem.adapters.BlockDataAdapter;
+import com.joeyoey.simpleschem.adapters.SchematicAdapter;
 import com.joeyoey.simpleschem.adapters.VectorAdapter;
+import com.joeyoey.simpleschem.nms.NMSAbstraction;
 import com.joeyoey.simpleschem.schemobjects.Schematic;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +20,7 @@ public final class SimpleSchem {
 
 
 
-    private static Gson gson;
+    public static Gson gson;
 
 
     private static void initializeGson() {
@@ -26,6 +28,8 @@ public final class SimpleSchem {
                 .serializeNulls()
                 .registerTypeAdapter(Vector.class, new VectorAdapter())
                 .registerTypeAdapter(BlockData.class, new BlockDataAdapter())
+                .registerTypeAdapter(Schematic.class, new SchematicAdapter())
+                .enableComplexMapKeySerialization()
                 .create();
     }
 
@@ -40,7 +44,7 @@ public final class SimpleSchem {
             initializeGson();
         }
 
-        return gson.toJson(schematic);
+        return gson.toJson(schematic, new TypeToken<Schematic>(){}.getType());
     }
 
 
@@ -148,5 +152,20 @@ public final class SimpleSchem {
     }
 
 
+    /**
+     * This method pastes a schematic at a desired location very fast/pretty fast
+     * @param center the center of the paste
+     * @param schematic the schematic to paste
+     * @param nmsAbstraction the method to paste them using nms
+     */
+    public static void fastPaste(Location center, Schematic schematic, NMSAbstraction nmsAbstraction) {
+        if (!center.isChunkLoaded()) {
+            center.getChunk().load();
+        }
+
+        for (Map.Entry<Vector, BlockData> entry : schematic.getBlockDataMap().entrySet()) {
+            nmsAbstraction.setBlockSuperFast(center.clone().add(entry.getKey()).getBlock(), entry.getValue(), false);
+        }
+    }
 
 }

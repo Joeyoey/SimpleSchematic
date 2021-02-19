@@ -17,7 +17,8 @@ public class BlockDataAdapter implements JsonDeserializer<BlockData>, JsonSerial
     @Override
     public JsonElement serialize(BlockData src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("bd", src.getAsString(true));
+
+        jsonObject.addProperty("bd", src.getAsString());
         return jsonObject;
     }
 }
