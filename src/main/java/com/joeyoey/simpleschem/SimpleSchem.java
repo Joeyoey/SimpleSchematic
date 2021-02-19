@@ -142,6 +142,9 @@ public final class SimpleSchem {
         if (!isSafe(center, schematic)) {
             return false;
         } else {
+            if (!center.isChunkLoaded()) {
+                center.getChunk().load();
+            }
             Location clone;
             for (Map.Entry<Vector, BlockData> entry : schematic.getBlockData().entrySet()) {
                 clone = center.clone();
@@ -167,5 +170,11 @@ public final class SimpleSchem {
             nmsAbstraction.setBlockSuperFast(center.clone().add(entry.getKey()).getBlock(), entry.getValue(), false);
         }
     }
+
+
+
+
+
+
 
 }

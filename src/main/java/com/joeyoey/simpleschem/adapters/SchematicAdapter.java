@@ -32,7 +32,7 @@ public class SchematicAdapter implements JsonDeserializer<Schematic>, JsonSerial
         JsonObject jsonObject = json.getAsJsonObject();
 
 
-        Map<Vector, String> blocks = SimpleSchem.gson.fromJson(jsonObject.get("blocks"), new TypeToken<Map<Vector, String>>(){}.getType());
+        Map<Vector, String> blocks = context.deserialize(jsonObject.get("blocks"), new TypeToken<Map<Vector, String>>(){}.getType());
 
         int width = jsonObject.get("width").getAsInt();
         int height = jsonObject.get("height").getAsInt();
@@ -62,7 +62,7 @@ public class SchematicAdapter implements JsonDeserializer<Schematic>, JsonSerial
     public JsonElement serialize(Schematic src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
 
-        jsonObject.add("blocks", SimpleSchem.gson.toJsonTree(src.getBlockDataMap(), new TypeToken<Map<Vector, String>>(){}.getType()));
+        jsonObject.add("blocks", context.serialize(src.getBlockDataMap(), new TypeToken<Map<Vector, String>>(){}.getType()));
 
         jsonObject.addProperty("width", src.getWidth());
         jsonObject.addProperty("height", src.getHeight());

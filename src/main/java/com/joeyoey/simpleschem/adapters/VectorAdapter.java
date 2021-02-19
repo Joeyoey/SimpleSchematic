@@ -18,11 +18,9 @@ public class VectorAdapter implements JsonDeserializer<Vector>, JsonSerializer<V
     @Override
     public JsonElement serialize(Vector src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
-        Bukkit.getLogger().severe("vector_data 1");
         jsonObject.addProperty("x", src.getBlockX());
         jsonObject.addProperty("y", src.getBlockY());
         jsonObject.addProperty("z", src.getBlockZ());
-        Bukkit.getLogger().severe("vector_data 2");
 
         return jsonObject;
     }

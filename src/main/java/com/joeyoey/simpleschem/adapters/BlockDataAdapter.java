@@ -1,6 +1,8 @@
 package com.joeyoey.simpleschem.adapters;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import com.joeyoey.simpleschem.SimpleSchem;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 
@@ -11,14 +13,21 @@ public class BlockDataAdapter implements JsonDeserializer<BlockData>, JsonSerial
     @Override
     public BlockData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-        return Bukkit.getServer().createBlockData(jsonObject.get("bd").getAsString());
+
+        BlockData blockData = Bukkit.getServer().createBlockData(jsonObject.get("bd").getAsString());
+
+        return blockData.clone();
     }
 
     @Override
     public JsonElement serialize(BlockData src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
 
-        jsonObject.addProperty("bd", src.getAsString());
+        String str = src.getAsString();
+        jsonObject.addProperty("bd", str);
+
+
+
         return jsonObject;
     }
 }
