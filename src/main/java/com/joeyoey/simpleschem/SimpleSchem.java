@@ -113,7 +113,7 @@ public final class SimpleSchem {
         int height = schematic.getHeight();
         int length = schematic.getLength();
         Location clone = center.clone();
-        clone.subtract(width/2,height/2,length/2);
+        clone.subtract(width/2.0,height/2.0,length/2.0);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y< height; y++) {
                 for (int z = 0; z < length; z++) {
@@ -122,10 +122,10 @@ public final class SimpleSchem {
                     }
                     clone.add(0,0,1);
                 }
-                clone.setZ(length/2);
+                clone.setZ(length/2.0);
                 clone.add(0,1,0);
             }
-            clone.setY(height/2);
+            clone.setY(height/2.0);
             clone.add(1,0,0);
         }
         return true;
@@ -143,7 +143,7 @@ public final class SimpleSchem {
             return false;
         } else {
             Location clone;
-            for (Map.Entry<Vector, BlockData> entry : schematic.getBlockDataMap().entrySet()) {
+            for (Map.Entry<Vector, BlockData> entry : schematic.getBlockData().entrySet()) {
                 clone = center.clone();
                 clone.add(entry.getKey()).getBlock().setBlockData(entry.getValue(),true);
             }
@@ -163,7 +163,7 @@ public final class SimpleSchem {
             center.getChunk().load();
         }
 
-        for (Map.Entry<Vector, BlockData> entry : schematic.getBlockDataMap().entrySet()) {
+        for (Map.Entry<Vector, BlockData> entry : schematic.getBlockData().entrySet()) {
             nmsAbstraction.setBlockSuperFast(center.clone().add(entry.getKey()).getBlock(), entry.getValue(), false);
         }
     }
