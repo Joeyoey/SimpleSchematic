@@ -1,7 +1,6 @@
 package com.joeyoey.simpleschem.adapters;
 
 import com.google.gson.*;
-import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Type;
@@ -11,16 +10,15 @@ public class VectorAdapter implements JsonDeserializer<Vector>, JsonSerializer<V
     @Override
     public Vector deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-
-        return new Vector(jsonObject.get("x").getAsInt(), jsonObject.get("y").getAsInt(), jsonObject.get("z").getAsInt());
+        return new Vector(jsonObject.get("x").getAsDouble(), jsonObject.get("y").getAsDouble(), jsonObject.get("z").getAsDouble());
     }
 
     @Override
     public JsonElement serialize(Vector src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("x", src.getBlockX());
-        jsonObject.addProperty("y", src.getBlockY());
-        jsonObject.addProperty("z", src.getBlockZ());
+        jsonObject.addProperty("x", src.getX());
+        jsonObject.addProperty("y", src.getY());
+        jsonObject.addProperty("z", src.getZ());
 
         return jsonObject;
     }
